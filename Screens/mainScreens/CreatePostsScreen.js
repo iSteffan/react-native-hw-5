@@ -10,6 +10,7 @@ import {
   Platform,
   Pressable,
 } from 'react-native';
+import * as Location from 'expo-location';
 import { Camera } from 'expo-camera';
 import { MaterialIcons } from '@expo/vector-icons';
 import { Ionicons } from '@expo/vector-icons';
@@ -18,15 +19,17 @@ import { FontAwesome5 } from '@expo/vector-icons';
 export default function CreatePostsScreen({ navigation }) {
   const [name, setName] = useState('');
   const [location, setLocation] = useState('');
-  const [isShowKeyboard, setIsShowKeyboard] = useState(false);
-  const [isNameFocus, setIsNameFocus] = useState(false);
-  const [isLocationFocus, setIsLocationFocus] = useState(false);
+  const [isKeyboardVisible, setIsKeyboardVisible] = useState(false);
+  const [isNameFocused, setIsNameFocused] = useState(false);
+  const [isLocationFocused, setIsLocationFocused] = useState(false);
 
   const [camera, setCamera] = useState(null);
   const [photo, setPhoto] = useState(null);
 
+  const [photoLocation, setPhotoLocation] = useState(null);
+
   const keyboardHide = () => {
-    setIsShowKeyboard(false);
+    setIsKeyboardVisible(false);
     Keyboard.dismiss();
   };
 
@@ -34,15 +37,29 @@ export default function CreatePostsScreen({ navigation }) {
     const photo = await camera.takePictureAsync();
     setPhoto(photo.uri);
     // console.log(photo.uri);
+
+    let { status } = await Location.requestForegroundPermissionsAsync();
+    if (status !== 'granted') {
+      console.log('Permission to access location was denied');
+    }
+
+    const photoLocation = await Location.getCurrentPositionAsync({});
+
+    const coords = {
+      latitude: photoLocation.coords.latitude,
+      longitude: photoLocation.coords.longitude,
+    };
+
+    setPhotoLocation(coords);
   };
 
   const sendPhoto = () => {
-    console.log('navigation', navigation);
-    navigation.navigate('Публикации', { photo, name, location });
+    navigation.navigate('Публікації', { photo, name, location, ...photoLocation });
     setName('');
     setLocation('');
     setPhoto(null);
-    setIsShowKeyboard(false);
+    setIsKeyboardVisible(false);
+    // console.log({ photo, name, location, ...photoLocation })
   };
 
   return (
@@ -50,15 +67,11 @@ export default function CreatePostsScreen({ navigation }) {
       <TouchableWithoutFeedback onPress={keyboardHide}>
         <View>
           <KeyboardAvoidingView behavior={Platform.OS === 'ios' ? 'padding' : 'height'}>
-            {!isShowKeyboard && (
+            {!isKeyboardVisible && (
               <View>
-                {/* <View style={styles.imageBackground}>
-                  <View style={styles.photoIconWrap}> */}
                 <Camera style={styles.camera} ref={setCamera}>
                   <Pressable onPress={takePhoto} style={styles.snapContainer}>
                     <MaterialIcons name="photo-camera" size={24} color="#BDBDBD" />
-                    {/* </View>
-                </View> */}
                   </Pressable>
                 </Camera>
                 <Text style={styles.text}>Завантажити фото</Text>
@@ -71,13 +84,13 @@ export default function CreatePostsScreen({ navigation }) {
               placeholder="Назва..."
               placeholderTextColor={'#BDBDBD'}
               onFocus={() => {
-                setIsShowKeyboard(true);
-                setIsNameFocus(true);
+                setIsKeyboardVisible(true);
+                setIsNameFocused(true);
               }}
-              onBlur={() => setIsNameFocus(false)}
+              onBlur={() => setIsNameFocused(false)}
               style={{
                 ...styles.input,
-                borderBottomColor: isNameFocus ? '#ff6c00' : '#e8e8e8',
+                borderBottomColor: isNameFocused ? '#ff6c00' : '#e8e8e8',
                 marginTop: 30,
               }}
             />
@@ -88,7 +101,7 @@ export default function CreatePostsScreen({ navigation }) {
                 color="#BDBDBD"
                 style={{
                   ...styles.locationIcon,
-                  color: isLocationFocus ? '#ff6c00' : '#BDBDBD',
+                  color: isLocationFocused ? '#ff6c00' : '#BDBDBD',
                 }}
               />
               <TextInput
@@ -97,13 +110,13 @@ export default function CreatePostsScreen({ navigation }) {
                 placeholder="Місцевість..."
                 placeholderTextColor={'#BDBDBD'}
                 onFocus={() => {
-                  setIsShowKeyboard(true);
-                  setIsLocationFocus(true);
+                  setIsKeyboardVisible(true);
+                  setIsLocationFocused(true);
                 }}
-                onBlur={() => setIsLocationFocus(false)}
+                onBlur={() => setIsLocationFocused(false)}
                 style={{
                   ...styles.input,
-                  borderBottomColor: isLocationFocus ? '#ff6c00' : '#e8e8e8',
+                  borderBottomColor: isLocationFocused ? '#ff6c00' : '#e8e8e8',
                   marginTop: 30,
                   paddingLeft: 25,
                 }}

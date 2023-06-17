@@ -1,12 +1,12 @@
 import { useState, useEffect } from 'react';
-import { Text, Image, View, StyleSheet, FlatList } from 'react-native';
+import { Text, Image, View, StyleSheet, FlatList, Pressable } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { EvilIcons } from '@expo/vector-icons';
 
-export default function PostsScreen({ route }) {
+export default function PostsScreen({ route, navigation }) {
   // console.log(route.params);
 
-  const [posts, setPosts] = useState(initialPosts);
+  const [posts, setPosts] = useState([]);
 
   useEffect(() => {
     if (route.params) {
@@ -34,14 +34,28 @@ export default function PostsScreen({ route }) {
             />
             <Text style={styles.postName}>{item.name}</Text>
             <View style={styles.infoWrap}>
-              <View style={styles.comments}>
+              <Pressable
+                style={styles.comments}
+                onPress={() => {
+                  navigation.navigate('Коментарі', { image: item.photo });
+                }}
+              >
                 <EvilIcons name="comment" size={24} color="#BDBDBD" />
                 <Text style={styles.commentText}>0</Text>
-              </View>
-              <View style={styles.location}>
+              </Pressable>
+              <Pressable
+                style={styles.location}
+                onPress={() =>
+                  navigation.navigate('Карта', {
+                    name: item.name,
+                    latitude: item.latitude,
+                    longitude: item.longitude,
+                  })
+                }
+              >
                 <Ionicons name="ios-location-outline" size={24} color="#BDBDBD" />
                 <Text style={styles.locationText}>{item.location}</Text>
-              </View>
+              </Pressable>
             </View>
           </View>
         )}

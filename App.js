@@ -4,6 +4,8 @@ import { NavigationContainer } from '@react-navigation/native';
 import Home from './Screens/mainScreens/Home';
 import LoginScreen from './Screens/authScreens/LoginScreen';
 import RegistrationScreen from './Screens/authScreens/RegistrationScreen';
+import MapScreen from './Screens/mainScreens/MapScreen';
+import CommentsScreen from './Screens/mainScreens/CommentsScreen';
 
 const AuthStack = createStackNavigator();
 
@@ -41,6 +43,16 @@ export default function App() {
           }}
           name="Home"
           component={Home}
+        />
+        <AuthStack.Screen
+          name="Коментарі"
+          component={CommentsScreen}
+          options={{ headerShown: true, headerTitleAlign: 'center' }}
+        />
+        <AuthStack.Screen
+          name="Карта"
+          component={MapScreen}
+          options={{ headerShown: true, headerTitleAlign: 'center' }}
         />
       </AuthStack.Navigator>
     </NavigationContainer>
