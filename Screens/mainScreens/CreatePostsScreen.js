@@ -33,24 +33,53 @@ export default function CreatePostsScreen({ navigation }) {
     Keyboard.dismiss();
   };
 
-  const takePhoto = async () => {
-    const photo = await camera.takePictureAsync();
-    setPhoto(photo.uri);
-    // console.log(photo.uri);
+  // const takePhoto = async () => {
+  //   const photo = await camera.takePictureAsync();
+  //   setPhoto(photo.uri);
+  //   // console.log(photo.uri);
 
-    let { status } = await Location.requestForegroundPermissionsAsync();
+  //   let { status } = await Location.requestForegroundPermissionsAsync();
+  //   if (status !== 'granted') {
+  //     console.log('Permission to access location was denied');
+  //   }
+
+  //   const photoLocation = await Location.getCurrentPositionAsync({});
+
+  //   const coords = {
+  //     latitude: photoLocation.coords.latitude,
+  //     longitude: photoLocation.coords.longitude,
+  //   };
+
+  //   setPhotoLocation(coords);
+  // };
+
+  const takePhoto = async () => {
+    let { status } = await Camera.requestCameraPermissionsAsync();
     if (status !== 'granted') {
-      console.log('Permission to access location was denied');
+      console.log('Permission to access camera was denied');
+      return;
     }
 
-    const photoLocation = await Location.getCurrentPositionAsync({});
+    try {
+      const photo = await camera.takePictureAsync();
+      setPhoto(photo.uri);
 
-    const coords = {
-      latitude: photoLocation.coords.latitude,
-      longitude: photoLocation.coords.longitude,
-    };
+      let { status } = await Location.requestForegroundPermissionsAsync();
+      if (status !== 'granted') {
+        console.log('Permission to access location was denied');
+      }
 
-    setPhotoLocation(coords);
+      const photoLocation = await Location.getCurrentPositionAsync({});
+
+      const coords = {
+        latitude: photoLocation.coords.latitude,
+        longitude: photoLocation.coords.longitude,
+      };
+
+      setPhotoLocation(coords);
+    } catch (error) {
+      console.log('Error taking photo:', error);
+    }
   };
 
   const sendPhoto = () => {
