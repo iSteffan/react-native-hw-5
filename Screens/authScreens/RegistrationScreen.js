@@ -172,7 +172,6 @@ export default function RegistrationScreen({ navigation }) {
                   >
                     <Text style={styles.logInText}>Вже є акаунт? Увійти</Text>
                   </Pressable>
-                  {/* <Text style={styles.logInText}>Вже є акаунт? Увійти</Text> */}
                 </View>
               )}
             </View>
