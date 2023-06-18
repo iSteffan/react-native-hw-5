@@ -76,108 +76,107 @@ export default function RegistrationScreen({ navigation }) {
 
   return (
     <TouchableWithoutFeedback onPress={keyboardHide}>
-      <View>
-        <KeyboardAvoidingView behavior={Platform.OS === 'ios' ? 'padding' : 'height'}>
-          <View style={styles.container}>
-            <Image source={require('../../assets/images/photo-bg.jpg')} style={styles.image} />
-            <View style={styles.formWrap}>
-              <View style={styles.avatar}>
-                <Pressable style={styles.avatarButton}>
-                  <AntDesign name="pluscircleo" size={24} color="#FF6C00" />
+      <KeyboardAvoidingView
+        behavior={Platform.OS === 'ios' ? 'padding' : null}
+        style={styles.container}
+      >
+        <View style={styles.container}>
+          <Image source={require('../../assets/images/photo-bg.jpg')} style={styles.image} />
+          <View style={styles.formWrap}>
+            <View style={styles.avatar}>
+              <Pressable style={styles.avatarButton}>
+                <AntDesign name="pluscircleo" size={24} color="#FF6C00" />
+              </Pressable>
+            </View>
+            <Text style={styles.title}>Реєстрація</Text>
+
+            <View style={styles.inputWrapper}>
+              <TextInput
+                value={state.login}
+                onChangeText={value => setState(prevState => ({ ...prevState, login: value }))}
+                placeholder="Логін"
+                autoComplete="username"
+                placeholderTextColor={'#BDBDBD'}
+                style={{
+                  ...styles.input,
+                  borderColor: isLoginFocused ? '#ff6c00' : '#e8e8e8',
+                  backgroundColor: isLoginFocused ? '#fff' : '#f6f6f6',
+                  marginBottom: 16,
+                }}
+                onFocus={() => {
+                  setIsKeyboardVisible(true);
+                  setIsLoginFocused(true);
+                }}
+                onBlur={() => setIsLoginFocused(false)}
+              />
+              <TextInput
+                value={state.email}
+                onChangeText={value => setState(prevState => ({ ...prevState, email: value }))}
+                placeholder="Адреса електронної пошти"
+                autoComplete="email"
+                placeholderTextColor={'#BDBDBD'}
+                style={{
+                  ...styles.input,
+                  borderColor: isEmailFocused ? '#ff6c00' : '#e8e8e8',
+                  backgroundColor: isEmailFocused ? '#fff' : '#f6f6f6',
+                  marginBottom: 16,
+                }}
+                onFocus={() => {
+                  setIsKeyboardVisible(true);
+                  setIsEmailFocused(true);
+                }}
+                onBlur={() => setIsEmailFocused(false)}
+              />
+              <View style={{ position: 'relative' }}>
+                <TextInput
+                  value={state.password}
+                  onChangeText={value =>
+                    setState(prevState => ({
+                      ...prevState,
+                      password: value,
+                    }))
+                  }
+                  placeholder="Пароль"
+                  placeholderTextColor={'#BDBDBD'}
+                  secureTextEntry={isPasswordHidden}
+                  style={{
+                    ...styles.input,
+                    borderColor: isPasswordFocused ? '#ff6c00' : '#e8e8e8',
+                    backgroundColor: isPasswordFocused ? '#fff' : '#f6f6f6',
+                  }}
+                  onFocus={() => {
+                    setIsKeyboardVisible(true);
+                    setIsPasswordFocused(true);
+                  }}
+                  onBlur={() => setIsPasswordFocused(false)}
+                />
+                <Pressable
+                  onPress={() => setIsPasswordHidden(prevState => !prevState)}
+                  style={styles.toggleButton}
+                >
+                  <Text style={styles.toggleText}>{isPasswordHidden ? 'Показати' : 'Сховати'}</Text>
                 </Pressable>
               </View>
-              <Text style={styles.title}>Реєстрація</Text>
-
-              <View style={styles.inputWrapper}>
-                <TextInput
-                  value={state.login}
-                  onChangeText={value => setState(prevState => ({ ...prevState, login: value }))}
-                  placeholder="Логін"
-                  autoComplete="username"
-                  placeholderTextColor={'#BDBDBD'}
-                  style={{
-                    ...styles.input,
-                    borderColor: isLoginFocused ? '#ff6c00' : '#e8e8e8',
-                    backgroundColor: isLoginFocused ? '#fff' : '#f6f6f6',
-                    marginBottom: 16,
-                  }}
-                  onFocus={() => {
-                    setIsKeyboardVisible(true);
-                    setIsLoginFocused(true);
-                  }}
-                  onBlur={() => setIsLoginFocused(false)}
-                />
-                <TextInput
-                  value={state.email}
-                  onChangeText={value => setState(prevState => ({ ...prevState, email: value }))}
-                  placeholder="Адреса електронної пошти"
-                  autoComplete="email"
-                  placeholderTextColor={'#BDBDBD'}
-                  style={{
-                    ...styles.input,
-                    borderColor: isEmailFocused ? '#ff6c00' : '#e8e8e8',
-                    backgroundColor: isEmailFocused ? '#fff' : '#f6f6f6',
-                    marginBottom: 16,
-                  }}
-                  onFocus={() => {
-                    setIsKeyboardVisible(true);
-                    setIsEmailFocused(true);
-                  }}
-                  onBlur={() => setIsEmailFocused(false)}
-                />
-                <View style={{ position: 'relative' }}>
-                  <TextInput
-                    value={state.password}
-                    onChangeText={value =>
-                      setState(prevState => ({
-                        ...prevState,
-                        password: value,
-                      }))
-                    }
-                    placeholder="Пароль"
-                    placeholderTextColor={'#BDBDBD'}
-                    secureTextEntry={isPasswordHidden}
-                    style={{
-                      ...styles.input,
-                      borderColor: isPasswordFocused ? '#ff6c00' : '#e8e8e8',
-                      backgroundColor: isPasswordFocused ? '#fff' : '#f6f6f6',
-                    }}
-                    onFocus={() => {
-                      setIsKeyboardVisible(true);
-                      setIsPasswordFocused(true);
-                    }}
-                    onBlur={() => setIsPasswordFocused(false)}
-                  />
-                  <Pressable
-                    onPress={() => setIsPasswordHidden(prevState => !prevState)}
-                    style={styles.toggleButton}
-                  >
-                    <Text style={styles.toggleText}>
-                      {isPasswordHidden ? 'Показати' : 'Сховати'}
-                    </Text>
-                  </Pressable>
-                </View>
-              </View>
-
-              {!isKeyboardVisible && (
-                <View>
-                  <Pressable onPress={handleSubmit} style={styles.button}>
-                    <Text style={styles.buttonText}>Зареєстуватися</Text>
-                  </Pressable>
-                  <Pressable
-                    onPress={() => navigation.navigate('Login')}
-                    style={{
-                      marginBottom: 50,
-                    }}
-                  >
-                    <Text style={styles.logInText}>Вже є акаунт? Увійти</Text>
-                  </Pressable>
-                </View>
-              )}
             </View>
+
+            {!isKeyboardVisible && (
+              <View>
+                <Pressable onPress={handleSubmit} style={styles.button}>
+                  <Text style={styles.buttonText}>Зареєстуватися</Text>
+                </Pressable>
+                <Pressable
+                  onPress={() => navigation.navigate('Login')}
+                  style={{
+                    marginBottom: 50,
+                  }}
+                >
+                  <Text style={styles.logInText}>Вже є акаунт? Увійти</Text>
+                </Pressable>
+              </View>
+            )}
           </View>
-        </KeyboardAvoidingView>
-      </View>
+        </View>
+      </KeyboardAvoidingView>
     </TouchableWithoutFeedback>
   );
 }
