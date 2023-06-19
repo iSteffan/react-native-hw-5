@@ -31,7 +31,7 @@ export default function Home({ navigation }) {
             <Feather
               name="grid"
               size={24}
-              color="#212121CC"
+              color={focused ? '#FF6C00' : '#212121CC'}
               style={{ marginBottom: 28, marginLeft: 90 }}
             />
           ),
@@ -73,7 +73,7 @@ export default function Home({ navigation }) {
             <Feather
               name="user"
               size={24}
-              color="#212121CC"
+              color={focused ? '#FF6C00' : '#212121CC'}
               style={{ marginBottom: 28, marginRight: 90 }}
             />
           ),
