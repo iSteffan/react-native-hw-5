@@ -94,73 +94,71 @@ export default function CreatePostsScreen({ navigation }) {
   return (
     <View style={styles.container}>
       <TouchableWithoutFeedback onPress={keyboardHide}>
-        <View>
-          <KeyboardAvoidingView behavior={Platform.OS === 'ios' ? 'padding' : 'height'}>
-            {!isKeyboardVisible && (
-              <View>
-                <Camera style={styles.camera} ref={setCamera}>
-                  <Pressable onPress={takePhoto} style={styles.snapContainer}>
-                    <MaterialIcons name="photo-camera" size={24} color="#BDBDBD" />
-                  </Pressable>
-                </Camera>
-                <Text style={styles.text}>Завантажити фото</Text>
-              </View>
-            )}
+        <KeyboardAvoidingView behavior={Platform.OS === 'ios' ? 'padding' : 'height'}>
+          {!isKeyboardVisible && (
+            <View>
+              <Camera style={styles.camera} ref={setCamera}>
+                <Pressable onPress={takePhoto} style={styles.snapContainer}>
+                  <MaterialIcons name="photo-camera" size={24} color="#BDBDBD" />
+                </Pressable>
+              </Camera>
+              <Text style={styles.text}>Завантажити фото</Text>
+            </View>
+          )}
 
+          <TextInput
+            value={name}
+            onChangeText={value => setName(value)}
+            placeholder="Назва..."
+            placeholderTextColor={'#BDBDBD'}
+            onFocus={() => {
+              setIsKeyboardVisible(true);
+              setIsNameFocused(true);
+            }}
+            onBlur={() => setIsNameFocused(false)}
+            style={{
+              ...styles.input,
+              borderBottomColor: isNameFocused ? '#ff6c00' : '#e8e8e8',
+              marginTop: 30,
+            }}
+          />
+          <View>
+            <Ionicons
+              name="ios-location-outline"
+              size={24}
+              color="#BDBDBD"
+              style={{
+                ...styles.locationIcon,
+                color: isLocationFocused ? '#ff6c00' : '#BDBDBD',
+              }}
+            />
             <TextInput
-              value={name}
-              onChangeText={value => setName(value)}
-              placeholder="Назва..."
+              value={location}
+              onChangeText={value => setLocation(value)}
+              placeholder="Місцевість..."
               placeholderTextColor={'#BDBDBD'}
               onFocus={() => {
                 setIsKeyboardVisible(true);
-                setIsNameFocused(true);
+                setIsLocationFocused(true);
               }}
-              onBlur={() => setIsNameFocused(false)}
+              onBlur={() => setIsLocationFocused(false)}
               style={{
                 ...styles.input,
-                borderBottomColor: isNameFocused ? '#ff6c00' : '#e8e8e8',
+                borderBottomColor: isLocationFocused ? '#ff6c00' : '#e8e8e8',
                 marginTop: 30,
+                paddingLeft: 25,
               }}
             />
-            <View>
-              <Ionicons
-                name="ios-location-outline"
-                size={24}
-                color="#BDBDBD"
-                style={{
-                  ...styles.locationIcon,
-                  color: isLocationFocused ? '#ff6c00' : '#BDBDBD',
-                }}
-              />
-              <TextInput
-                value={location}
-                onChangeText={value => setLocation(value)}
-                placeholder="Місцевість..."
-                placeholderTextColor={'#BDBDBD'}
-                onFocus={() => {
-                  setIsKeyboardVisible(true);
-                  setIsLocationFocused(true);
-                }}
-                onBlur={() => setIsLocationFocused(false)}
-                style={{
-                  ...styles.input,
-                  borderBottomColor: isLocationFocused ? '#ff6c00' : '#e8e8e8',
-                  marginTop: 30,
-                  paddingLeft: 25,
-                }}
-              />
-            </View>
-            <Pressable onPress={sendPhoto} style={styles.sendBtn}>
-              <Text style={styles.buttonText}>Опублікувати</Text>
+          </View>
+          <Pressable onPress={sendPhoto} style={styles.sendBtn}>
+            <Text style={styles.buttonText}>Опублікувати</Text>
+          </Pressable>
+          <View style={styles.trashIconWrap}>
+            <Pressable style={styles.trashButton}>
+              <FontAwesome5 name="trash-alt" size={24} color="#DADADA" />
             </Pressable>
-            <View style={styles.trashIconWrap}>
-              <Pressable style={styles.trashButton}>
-                <FontAwesome5 name="trash-alt" size={24} color="#DADADA" />
-              </Pressable>
-            </View>
-          </KeyboardAvoidingView>
-        </View>
+          </View>
+        </KeyboardAvoidingView>
       </TouchableWithoutFeedback>
     </View>
   );
@@ -238,6 +236,6 @@ const styles = StyleSheet.create({
   },
   trashIconWrap: {
     alignItems: 'center',
-    marginTop: 120,
+    marginTop: 140,
   },
 });
