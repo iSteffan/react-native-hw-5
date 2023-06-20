@@ -44,11 +44,11 @@ export default function CommentsScreen({ route }) {
   const postImage = route.params.image;
   const [comments, setComments] = useState([]);
   const [inputValue, setInputValue] = useState('');
-  const [isShowKeyboard, setIsShowKeyboard] = useState(false);
+  const [isKeyboardVisible, setIsKeyboardVisible] = useState(false);
 
   const keyboardHide = () => {
     Keyboard.dismiss();
-    setIsShowKeyboard(false);
+    setIsKeyboardVisible(false);
   };
 
   const sendComment = () => {
@@ -62,8 +62,8 @@ export default function CommentsScreen({ route }) {
       <View>
         <KeyboardAvoidingView behavior={Platform.OS === 'ios' ? 'padding' : 'height'}>
           <View style={styles.container}>
-            {!isShowKeyboard && <Image source={{ uri: postImage }} style={styles.postImage} />}
-            <View style={{ height: isShowKeyboard ? 230 : 280 }}>
+            {!isKeyboardVisible && <Image source={{ uri: postImage }} style={styles.postImage} />}
+            <View>
               <FlatList
                 scrollEnabled={true}
                 data={comments}
@@ -91,7 +91,7 @@ export default function CommentsScreen({ route }) {
                 placeholderTextColor={'#BDBDBD'}
                 style={styles.input}
                 onFocus={() => {
-                  setIsShowKeyboard(true);
+                  setIsKeyboardVisible(true);
                 }}
               />
               <Pressable style={styles.sendIcon} onPress={sendComment}>
@@ -106,7 +106,10 @@ export default function CommentsScreen({ route }) {
 }
 const styles = StyleSheet.create({
   container: {
-    height: '100%',
+    display: 'flex',
+    flexDirection: 'column',
+    gap: 180,
+    // height: '100%',
     paddingHorizontal: 16,
     paddingTop: 30,
     backgroundColor: '#fff',
@@ -117,7 +120,7 @@ const styles = StyleSheet.create({
     marginBottom: 32,
     borderRadius: 8,
   },
-
+  inputWrap: { paddingBottom: 16 },
   input: {
     backgroundColor: '#E8E8E8',
     height: 50,
