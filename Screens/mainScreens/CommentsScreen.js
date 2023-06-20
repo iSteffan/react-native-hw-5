@@ -106,8 +106,7 @@ export default function CommentsScreen({ route }) {
 }
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
-    // justifyContent: "flex-end",
+    height: '100%',
     paddingHorizontal: 16,
     paddingTop: 30,
     backgroundColor: '#fff',
@@ -115,8 +114,10 @@ const styles = StyleSheet.create({
   postImage: {
     width: '100%',
     height: 240,
-    marginBottom: 20,
+    marginBottom: 32,
+    borderRadius: 8,
   },
+
   input: {
     backgroundColor: '#E8E8E8',
     height: 50,
@@ -141,7 +142,7 @@ const styles = StyleSheet.create({
   commentTextContainer: {
     backgroundColor: '#00000008',
     padding: 16,
-    width: 340,
+    width: 299,
   },
   commentText: {
     fontFamily: 'Roboto-Regular',
@@ -154,7 +155,7 @@ const styles = StyleSheet.create({
     display: 'flex',
     flexDirection: 'row',
     justifyContent: 'space-between',
-    marginBottom: 10,
+    marginBottom: 24,
   },
   date: {
     color: '#BDBDBD',

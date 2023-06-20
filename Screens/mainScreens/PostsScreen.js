@@ -27,11 +27,7 @@ export default function PostsScreen({ route, navigation }) {
         keyExtractor={(item, indx) => indx.toString()}
         renderItem={({ item }) => (
           <View style={styles.postContainer}>
-            <Image
-              // source={item.photo}
-              source={{ uri: item.photo }}
-              style={styles.postImg}
-            />
+            <Image source={{ uri: item.photo }} style={styles.postImg} />
             <Text style={styles.postName}>{item.name}</Text>
             <View style={styles.infoWrap}>
               <Pressable
@@ -92,7 +88,7 @@ const styles = StyleSheet.create({
     lineHeight: 13,
   },
   postContainer: {
-    marginBottom: 20,
+    marginBottom: 34,
     paddingHorizontal: 4,
   },
   postImg: {
@@ -100,6 +96,7 @@ const styles = StyleSheet.create({
 
     width: '100%',
     height: 240,
+    borderRadius: 8,
   },
   postName: {
     marginBottom: 11,
